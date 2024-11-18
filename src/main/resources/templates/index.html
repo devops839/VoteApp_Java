@@ -4,66 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vote for Your Favorite Movie Genre</title>
-    <!-- Link to the CSS file in the static folder -->
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Link to the CSS file located in static/css -->
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <h1>Vote for Your Favorite Movie Genre</h1>
-    
-    <!-- Vote form -->
-    <form action="/vote" method="post">
-        <div>
-            <label for="genre">Choose a genre:</label>
-            <select name="genre" id="genre">
-                <option value="Action/Adventure">Action/Adventure</option>
-                <option value="Rom-Com">Rom-Com</option>
-                <option value="Horror">Horror</option>
-            </select>
+    <div class="container">
+        <h1>Vote for Your Favorite Movie Genre</h1>
+        
+        <!-- Voting Form -->
+        <form action="/vote" method="post">
+            <label>
+                <input type="radio" name="genre" value="Action/Adventure"> Action/Adventure
+            </label><br>
+            <label>
+                <input type="radio" name="genre" value="Rom-Com"> Rom-Com
+            </label><br>
+            <label>
+                <input type="radio" name="genre" value="Horror"> Horror
+            </label><br><br>
+            <button type="submit">Vote</button>
+        </form>
+
+        <!-- Displaying Vote Counts Only After Voting -->
+        <div th:if="${votes != null}">
+            <h2>Current Vote Counts</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Movie Genre</th>
+                        <th>Votes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Action/Adventure</td>
+                        <td th:text="${votes[0].count}"></td>
+                    </tr>
+                    <tr>
+                        <td>Rom-Com</td>
+                        <td th:text="${votes[1].count}"></td>
+                    </tr>
+                    <tr>
+                        <td>Horror</td>
+                        <td th:text="${votes[2].count}"></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <button type="submit">Vote</button>
-    </form>
-
-    <!-- Button to show current vote counts -->
-    <button id="showVotesBtn">Show Current Vote Counts</button>
-
-    <h2>Current Vote Counts</h2>
-    <table id="voteResults">
-        <tr>
-            <th>Movie Genre</th>
-            <th>Votes</th>
-        </tr>
-        <!-- The vote counts will be populated here via JavaScript -->
-    </table>
-
-    <script>
-        // Fetch and display the vote counts when the button is clicked
-        document.getElementById('showVotesBtn').addEventListener('click', function() {
-            fetch('/votes')
-                .then(response => response.json())
-                .then(data => {
-                    const table = document.getElementById('voteResults');
-                    table.innerHTML = '<tr><th>Movie Genre</th><th>Votes</th></tr>'; // Clear existing rows
-
-                    // Loop through vote data and create rows dynamically
-                    data.forEach(vote => {
-                        const row = document.createElement('tr');
-                        
-                        // Add specific class based on genre
-                        let genreClass = '';
-                        if (vote.option === "Action/Adventure") {
-                            genreClass = 'adventure';
-                        } else if (vote.option === "Rom-Com") {
-                            genreClass = 'comedy';
-                        } else if (vote.option === "Horror") {
-                            genreClass = 'horror';
-                        }
-
-                        row.classList.add(genreClass);
-                        row.innerHTML = `<td>${vote.option}</td><td>${vote.count}</td>`;
-                        table.appendChild(row);
-                    });
-                });
-        });
-    </script>
+    </div>
 </body>
 </html>
