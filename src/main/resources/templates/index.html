@@ -9,6 +9,7 @@
 <body>
     <h1>Vote for Your Favorite Movie Genre</h1>
     
+    <!-- Vote form -->
     <form action="/vote" method="post">
         <div>
             <label for="genre">Choose a genre:</label>
@@ -20,7 +21,8 @@
         </div>
         <button type="submit">Vote</button>
     </form>
-    
+
+    <!-- Button to show current vote counts -->
     <button id="showVotesBtn">Show Current Vote Counts</button>
 
     <h2>Current Vote Counts</h2>
@@ -33,14 +35,29 @@
     </table>
 
     <script>
+        // Fetch and display the vote counts when the button is clicked
         document.getElementById('showVotesBtn').addEventListener('click', function() {
             fetch('/votes')
                 .then(response => response.json())
                 .then(data => {
                     const table = document.getElementById('voteResults');
                     table.innerHTML = '<tr><th>Movie Genre</th><th>Votes</th></tr>'; // Clear existing rows
+
+                    // Loop through vote data and create rows dynamically
                     data.forEach(vote => {
                         const row = document.createElement('tr');
+                        
+                        // Add specific class based on genre
+                        let genreClass = '';
+                        if (vote.option === "Action/Adventure") {
+                            genreClass = 'adventure';
+                        } else if (vote.option === "Rom-Com") {
+                            genreClass = 'comedy';
+                        } else if (vote.option === "Horror") {
+                            genreClass = 'horror';
+                        }
+
+                        row.classList.add(genreClass);
                         row.innerHTML = `<td>${vote.option}</td><td>${vote.count}</td>`;
                         table.appendChild(row);
                     });
