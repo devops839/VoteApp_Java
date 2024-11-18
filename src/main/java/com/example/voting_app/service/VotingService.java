@@ -9,28 +9,26 @@ import java.util.List;
 @Service
 public class VotingService {
 
-    private List<Vote> votes;
+    // In-memory storage for vote counts (will reset on app restart or page refresh)
+    private List<Vote> votes = new ArrayList<>();
 
     public VotingService() {
-        votes = new ArrayList<>();
-        // Initialize with default values
+        // Initialize with default genres and 0 votes
         votes.add(new Vote("Action/Adventure", 0));
         votes.add(new Vote("Rom-Com", 0));
         votes.add(new Vote("Horror", 0));
     }
 
-    // Increment the vote for a genre
-    public void incrementVote(String genre) {
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void castVote(String option) {
         for (Vote vote : votes) {
-            if (vote.getGenre().equals(genre)) {
-                vote.setCount(vote.getCount() + 1);
+            if (vote.getOption().equalsIgnoreCase(option)) {
+                vote.incrementCount();
                 break;
             }
         }
-    }
-
-    // Get the current votes
-    public List<Vote> getVotes() {
-        return votes;
     }
 }
