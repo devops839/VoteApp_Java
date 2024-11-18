@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting App</title>
+</head>
+<body>
+    <h1>Vote for Your Favorite Candidate</h1>
+
+    <div id="candidate-list">
+        <!-- Candidate list will be populated here -->
+    </div>
+
+    <script>
+        // Fetch candidates from the backend API
+        fetch('http://localhost:8080/api/vote/candidates')
+            .then(response => response.json())
+            .then(candidates => {
+                const candidateList = document.getElementById('candidate-list');
+                candidates.forEach(candidate => {
+                    const candidateElement = document.createElement('div');
+                    candidateElement.innerHTML = `
+                        <p>${candidate.name} (Votes: ${candidate.votes})</p>
+                        <button onclick="vote(${candidate.id})">Vote</button>
+                    `;
+                    candidateList.appendChild(candidateElement);
+                });
+            });
+
+        // Function to handle voting action
+        function vote(candidateId) {
+            fetch(`http://localhost:8080/api/vote/vote?candidateId=${candidateId}`, {
+                method: 'POST',
+            })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+                location.reload(); // Reload page to update vote count
+            });
+        }
+    </script>
+</body>
+</html>
