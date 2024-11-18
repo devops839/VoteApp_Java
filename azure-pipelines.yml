@@ -12,7 +12,7 @@ pool:
 steps:
 - task: adopt-openjdk-installer@1
   inputs:
-    majorVersion: '11'
+    majorVersion: '14'
     useLatestOption: 'latest'
     jdkArchitectureOption: 'x64'
     jvmOption: 'hotspot'
