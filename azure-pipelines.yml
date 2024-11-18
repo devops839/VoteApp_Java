@@ -21,7 +21,8 @@ steps:
   inputs:
     SonarQube: 'sonar_sc'
     scannerMode: 'other'
-
+    extraProperties: 'sonar.ws.timeout=120'
+    
 # Compile the code (doesn't create jar)
 - task: Maven@4
   inputs:
