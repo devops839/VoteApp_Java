@@ -10,22 +10,23 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+# Prepare SonarQube analysis configuration
+- task: SonarQubePrepare@7
+  inputs:
+    SonarQube: 'sonar_sc'
+    scannerMode: 'other'
+    extraProperties: |
+      # Additional properties that will be passed to the scanner,
+      # Put one key=value per line, example:
+      # sonar.exclusions=**/*.bin
+      sonar.projectKey=voting_app_voting_app_AZNAd2rW0ehqphdOvO_g
+
 # Install Java 17
 - task: JavaToolInstaller@0
   inputs:
     versionSpec: '17'
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
-
-# Prepare SonarQube analysis configuration
-- task: SonarQubePrepare@7
-  inputs:
-    SonarQube: 'sonar_sc'  # SonarQube connection
-    scannerMode: 'other'
-    extraProperties: |
-      sonar.ws.timeout=120  # Increase timeout to 120 seconds
-      sonar.sources=src/main/java  # Specify the source folder for analysis (adjust if necessary)
-      sonar.java.binaries=target/classes  # Specify the binary folder after compilation (adjust as needed)
 
 # Compile the code (doesn't create jar)
 - task: Maven@4
@@ -67,6 +68,9 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
 
+- task: SonarQubePublish@7
+  inputs:
+    pollingTimeoutSec: '300'
 # Final SonarQube Analysis (This task must be done after Maven build, and analysis should be triggered before Docker build)
 - task: SonarQubeAnalyze@7
   inputs:
