@@ -1,11 +1,14 @@
-# Use an OpenJDK image as a base image
+# Use OpenJDK 17 image from Docker Hub
 FROM openjdk:17-jdk-slim
 
-# Copy the Spring Boot JAR file into the container
-COPY target/voting-app-0.0.1-SNAPSHOT.jar /app/voting-app.jar
+# Set working directory in the container
+WORKDIR /app
 
-# Expose the port the application will run on
+# Copy the built jar file into the container
+COPY target/voting-app.jar voting-app.jar
+
+# Expose port 8080
 EXPOSE 8080
 
-# Command to run the application
-ENTRYPOINT ["java", "-jar", "/app/voting-app.jar"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "voting-app.jar"]
