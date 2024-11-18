@@ -10,12 +10,14 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+# Step 1: Install Java 17
 - task: JavaToolInstaller@0
   inputs:
     versionSpec: '17'
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
     
+# Step 2: Compile the code (doesn't create jar)
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
@@ -27,9 +29,31 @@ steps:
     mavenAuthenticateFeed: false
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
+
+# Step 3: Package the code (creates the jar)
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
+    goals: 'package'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '17'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+
+# Step 4: List contents of target directory (debugging step)
+- script: |
+    echo "Listing contents of target directory"
+    ls -l target/
+  displayName: 'List contents of target directory'
+
+# Step 5: Run tests (JUnit)
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'test'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
@@ -37,6 +61,8 @@ steps:
     mavenAuthenticateFeed: false
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
+
+# Step 6: Verify (integration tests, checks)
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
@@ -48,9 +74,12 @@ steps:
     mavenAuthenticateFeed: false
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
+
+# Step 7: Build and Push Docker Image
 - task: Docker@2
   inputs:
     containerRegistry: 'dockerhub_sc'
     repository: 'devops839/voting-app-java'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+    tags: 'latest'
