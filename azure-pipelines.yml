@@ -64,9 +64,3 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
-
-# Run the Docker Container
-- script: |
-    echo "Running Docker container from the image"
-    docker run -d -p 8080:8080 pavan539/voting-app-java:latest
-  displayName: 'Run Docker container'
