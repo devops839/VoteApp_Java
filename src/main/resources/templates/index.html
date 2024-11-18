@@ -3,59 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voting App</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Vote for Your Favorite Movie Genre</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Ensure your CSS file is linked correctly -->
 </head>
 <body>
     <div class="container">
         <h1>Vote for Your Favorite Movie Genre</h1>
+        
+        <!-- Voting Options -->
         <form action="/vote" method="post">
-            <div class="options">
-                <!-- Action/Adventure -->
-                <div class="option">
-                    <input type="radio" id="actionAdventure" name="option" value="Action/Adventure" required>
-                    <label for="actionAdventure">Action/Adventure</label>
-                </div>
-
-                <!-- Rom-Com -->
-                <div class="option">
-                    <input type="radio" id="romCom" name="option" value="Rom-Com" required>
-                    <label for="romCom">Rom-Com</label>
-                </div>
-
-                <!-- Horror -->
-                <div class="option">
-                    <input type="radio" id="horror" name="option" value="Horror" required>
-                    <label for="horror">Horror</label>
-                </div>
-            </div>
+            <label>
+                <input type="radio" name="genre" value="Action/Adventure"> Action/Adventure
+            </label><br>
+            <label>
+                <input type="radio" name="genre" value="Rom-Com"> Rom-Com
+            </label><br>
+            <label>
+                <input type="radio" name="genre" value="Horror"> Horror
+            </label><br><br>
             <button type="submit">Vote</button>
         </form>
-
+        
         <h2>Current Vote Counts</h2>
-        <table class="vote-table">
-            <thead>
-                <tr>
-                    <th>Movie Genre</th>
-                    <th>Votes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Display votes dynamically for each genre -->
-                <tr>
-                    <td>Action/Adventure</td>
-                    <td>{{votes[0].count}}</td>
-                </tr>
-                <tr>
-                    <td>Rom-Com</td>
-                    <td>{{votes[1].count}}</td>
-                </tr>
-                <tr>
-                    <td>Horror</td>
-                    <td>{{votes[2].count}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Only show vote counts if votes are available -->
+        <div th:if="${votes != null}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Movie Genre</th>
+                        <th>Votes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Action/Adventure</td>
+                        <td th:text="${votes[0].count}"></td>
+                    </tr>
+                    <tr>
+                        <td>Rom-Com</td>
+                        <td th:text="${votes[1].count}"></td>
+                    </tr>
+                    <tr>
+                        <td>Horror</td>
+                        <td th:text="${votes[2].count}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
