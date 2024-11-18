@@ -22,10 +22,8 @@ steps:
     goals: 'clean package install -Dsonar.skip=true'
     publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '17'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
-    sonarQubeRunAnalysis: true
-    sqMavenPluginVersionChoice: 'latest'
-    jdkVersionOption: '17' # Set to '17' to match your Java Tool Installer
-    jdkArchitectureOption: 'x64'
+    sonarQubeRunAnalysis: false
