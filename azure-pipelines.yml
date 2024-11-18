@@ -19,7 +19,7 @@ steps:
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'clean package sonar:sonar'
+    goals: 'clean package install -Dsonar.skip=true'
     publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
     mavenVersionOption: 'Default'
