@@ -9,23 +9,27 @@ import java.util.List;
 @Repository
 public class VoteRepository {
 
-    private List<Vote> votes = new ArrayList<>();
+    private List<Vote> votes;
 
+    // Initialize with default vote counts
     public VoteRepository() {
-        // Add some default vote options
-        votes.add(new Vote("Option 1"));
-        votes.add(new Vote("Option 2"));
-        votes.add(new Vote("Option 3"));
+        votes = new ArrayList<>();
+        votes.add(new Vote("Action/Adventure", 0));
+        votes.add(new Vote("Rom-Com", 0));
+        votes.add(new Vote("Horror", 0));
     }
 
-    public List<Vote> getAllVotes() {
+    // Get all votes
+    public List<Vote> getVotes() {
         return votes;
     }
 
-    public void incrementVote(String option) {
+    // Increment the vote count for the selected genre
+    public void incrementVote(String genre) {
         for (Vote vote : votes) {
-            if (vote.getOption().equals(option)) {
+            if (vote.getGenre().equals(genre)) {
                 vote.incrementCount();
+                break;
             }
         }
     }
