@@ -2,30 +2,23 @@ package com.example.voting_app.model;
 
 public class Vote {
 
-    private String genre; // The movie genre (Action/Adventure, Rom-Com, Horror)
-    private int count;    // The count of votes for this genre
+    private String option;  // This will store the movie genre name
+    private int count;      // This will store the vote count
 
     // Constructor
-    public Vote(String genre, int count) {
-        this.genre = genre;
+    public Vote(String option, int count) {
+        this.option = option;
         this.count = count;
     }
 
-    // Getters and Setters
-    public String getGenre() {
-        return genre;
+    // Getter for the 'option' field (movie genre)
+    public String getOption() {
+        return option;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
+    // Getter for the 'count' field (vote count)
     public int getCount() {
         return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 
     // Method to increment the vote count
