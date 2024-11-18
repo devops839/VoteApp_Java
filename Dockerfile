@@ -1,14 +1,14 @@
-# Use OpenJDK 17 image from Docker Hub
+# Use a base image with Java 17
 FROM openjdk:17-jdk-slim
 
-# Set working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the built jar file into the container
-COPY target/voting-app.jar voting-app.jar
+# Copy the built .jar file into the container
+COPY target/voting-app-*.jar /app/voting-app.jar  # Ensure the path matches the actual output file name
 
-# Expose port 8080
+# Expose port 8080 to make the app accessible
 EXPOSE 8080
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "voting-app.jar"]
+# Run the jar file
+ENTRYPOINT ["java", "-jar", "/app/voting-app.jar"]
