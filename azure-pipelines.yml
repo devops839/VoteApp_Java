@@ -43,12 +43,6 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
 
-# List contents of target directory (debugging step)
-- script: |
-    echo "Listing contents of target directory"
-    ls -l target/
-  displayName: 'List contents of target directory'
-
 # Verify (integration tests, checks)
 - task: Maven@4
   inputs:
