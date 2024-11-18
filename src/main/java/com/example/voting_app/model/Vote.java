@@ -1,20 +1,22 @@
 package com.example.voting_app.model;
 
 public class Vote {
-    private String option;
+
+    private String genre;
     private int count;
 
-    public Vote(String option) {
-        this.option = option;
-        this.count = 0;
+    public Vote(String genre, int count) {
+        this.genre = genre;
+        this.count = count;
     }
 
-    public String getOption() {
-        return option;
+    // Getters and Setters
+    public String getGenre() {
+        return genre;
     }
 
-    public void setOption(String option) {
-        this.option = option;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public int getCount() {
@@ -23,9 +25,5 @@ public class Vote {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public void incrementCount() {
-        this.count++;
     }
 }
