@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vote for Your Favorite Movie Genre</title>
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Ensure your CSS file is linked correctly -->
+    <!-- Link to the CSS file located in static/css -->
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <div class="container">
         <h1>Vote for Your Favorite Movie Genre</h1>
         
-        <!-- Voting Options -->
+        <!-- Voting Form -->
         <form action="/vote" method="post">
             <label>
                 <input type="radio" name="genre" value="Action/Adventure"> Action/Adventure
@@ -23,10 +24,10 @@
             </label><br><br>
             <button type="submit">Vote</button>
         </form>
-        
-        <h2>Current Vote Counts</h2>
-        <!-- Only show vote counts if votes are available -->
+
+        <!-- Displaying Vote Counts Only After Voting -->
         <div th:if="${votes != null}">
+            <h2>Current Vote Counts</h2>
             <table>
                 <thead>
                     <tr>
