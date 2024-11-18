@@ -18,17 +18,36 @@ steps:
     
 - task: Maven@4
   inputs:
-    mavenPomFile: 'pom.xml'  # Make sure this points to your actual pom.xml
-    goals: 'clean package'   # This will build your jar and place it in the target directory
-    publishJUnitResults: false  # If you have JUnit tests, set this to true
+    mavenPomFile: 'pom.xml'
+    goals: 'compile'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '17'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
-    sonarQubeRunAnalysis: false  # Set to false if you don't need SonarQube
-    sqMavenPluginVersionChoice: 'latest'
-    jdkVersionOption: '17'  # Set to '17' to match your Java Tool Installer
-    jdkArchitectureOption: 'x64'
+    sonarQubeRunAnalysis: false
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'verify'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
 - task: Docker@2
   inputs:
     containerRegistry: 'dockerhub_sc'
