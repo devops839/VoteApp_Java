@@ -1,29 +1,21 @@
 package com.example.voting_app.controller;
 
 import com.example.voting_app.service.VotingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.example.voting_app.model.Vote;
 
-@Controller
+import java.util.List;
+
 public class VotingController {
 
-    @Autowired
-    private VotingService votingService;
+    private final VotingService votingService = new VotingService();
 
-    @GetMapping("/")
-    public String getVotingPage(Model model) {
-        model.addAttribute("votes", votingService.getVotes());
-        return "index";
+    // Get all votes
+    public List<Vote> getVotes() {
+        return votingService.getAllVotes();
     }
 
-    @PostMapping("/vote")
-    public String castVote(@RequestParam String option, Model model) {
-        votingService.castVote(option);
-        model.addAttribute("votes", votingService.getVotes());
-        return "index";
+    // Cast a vote for a specific genre
+    public void castVote(String genre) {
+        votingService.voteForGenre(genre);
     }
 }
