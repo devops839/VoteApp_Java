@@ -16,10 +16,10 @@ steps:
     SonarQube: 'sonar_sc'
     scannerMode: 'other'
     extraProperties: |
-      # Additional properties that will be passed to the scanner,
-      # Put one key=value per line, example:
-      # sonar.exclusions=**/*.bin
-      sonar.projectKey=voting_app_voting_app_AZNAd2rW0ehqphdOvO_g
+      sonar.ws.timeout=180   # Increase timeout to 180 seconds (3 minutes)
+      sonar.projectKey=voting_app_voting_app_AZNAd2rW0ehqphdOvO_g  # Your SonarQube project key
+      sonar.projectName=voting-app   # Your SonarQube project name
+      sonar.projectVersion=0.0.1-SNAPSHOT
 
 # Install Java 17
 - task: JavaToolInstaller@0
