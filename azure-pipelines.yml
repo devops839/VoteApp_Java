@@ -1,10 +1,10 @@
 trigger:
   branches:
     include:
-    - main
-    - releases/*
+      - main
+      - releases/*
     exclude:
-    - releases/old*
+      - releases/old*
 
 pool:
   vmImage: ubuntu-latest
@@ -17,12 +17,16 @@ steps:
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
 
+# Prepare SonarQube analysis configuration
 - task: SonarQubePrepare@7
   inputs:
-    SonarQube: 'sonar_sc'
+    SonarQube: 'sonar_sc'  # SonarQube connection
     scannerMode: 'other'
-    extraProperties: 'sonar.ws.timeout=120'
-    
+    extraProperties: |
+      sonar.ws.timeout=120  # Increase timeout to 120 seconds
+      sonar.sources=src/main/java  # Specify the source folder for analysis (adjust if necessary)
+      sonar.java.binaries=target/classes  # Specify the binary folder after compilation (adjust as needed)
+
 # Compile the code (doesn't create jar)
 - task: Maven@4
   inputs:
@@ -34,20 +38,21 @@ steps:
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
-    sonarQubeRunAnalysis: false
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
 
 # Package the code (creates the jar)
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'package'
+    goals: 'package sonar:sonar'  # Trigger SonarQube analysis after packaging
     publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '17'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
-    sonarQubeRunAnalysis: false
+    sonarQubeRunAnalysis: false  # Let the 'SonarQubeAnalyze' task handle the final analysis step
 
 # Verify (integration tests, checks)
 - task: Maven@4
@@ -62,9 +67,11 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
 
+# Final SonarQube Analysis (This task must be done after Maven build, and analysis should be triggered before Docker build)
 - task: SonarQubeAnalyze@7
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
+
 # Build and Push Docker Image
 - task: Docker@2
   inputs:
