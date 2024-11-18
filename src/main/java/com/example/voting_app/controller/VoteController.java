@@ -1,7 +1,7 @@
-package com.example.votingapp.controller;
+package com.example.voting_app.controller;
 
-import com.example.votingapp.model.Candidate;
-import com.example.votingapp.repository.CandidateRepository;
+import com.example.voting_app.model.Candidate;
+import com.example.voting_app.repository.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
