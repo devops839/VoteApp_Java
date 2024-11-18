@@ -18,15 +18,17 @@ steps:
     
 - task: Maven@4
   inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'clean package install -Dsonar.skip=true'
-    publishJUnitResults: false
+    mavenPomFile: 'pom.xml'  # Make sure this points to your actual pom.xml
+    goals: 'clean package'   # This will build your jar and place it in the target directory
+    publishJUnitResults: false  # If you have JUnit tests, set this to true
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '17'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
-    sonarQubeRunAnalysis: false
+    sonarQubeRunAnalysis: false  # Set to false if you don't need SonarQube
+    sqMavenPluginVersionChoice: 'latest'
+    jdkVersionOption: '17'  # Set to '17' to match your Java Tool Installer
+    jdkArchitectureOption: 'x64'
 - task: Docker@2
   inputs:
     containerRegistry: 'dockerhub_sc'
