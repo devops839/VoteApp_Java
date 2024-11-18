@@ -12,23 +12,25 @@ public class VotingService {
     private List<Vote> votes;
 
     public VotingService() {
-        // Initialize with movie genre options
         votes = new ArrayList<>();
-        votes.add(new Vote("Action/Adventure"));
-        votes.add(new Vote("Rom-Com"));
-        votes.add(new Vote("Horror"));
+        // Initialize with default values
+        votes.add(new Vote("Action/Adventure", 0));
+        votes.add(new Vote("Rom-Com", 0));
+        votes.add(new Vote("Horror", 0));
     }
 
-    public List<Vote> getAllVotes() {
-        return votes;
-    }
-
-    public void voteForOption(String option) {
+    // Increment the vote for a genre
+    public void incrementVote(String genre) {
         for (Vote vote : votes) {
-            if (vote.getOption().equalsIgnoreCase(option)) {
-                vote.incrementCount();
+            if (vote.getGenre().equals(genre)) {
+                vote.setCount(vote.getCount() + 1);
                 break;
             }
         }
+    }
+
+    // Get the current votes
+    public List<Vote> getVotes() {
+        return votes;
     }
 }
