@@ -1,33 +1,21 @@
 package com.example.voting_app.service;
 
 import com.example.voting_app.model.Vote;
-import org.springframework.stereotype.Service;
+import com.example.voting_app.repository.VoteRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class VotingService {
 
-    private List<Vote> votes = new ArrayList<>();
+    private final VoteRepository voteRepository = new VoteRepository();
 
-    public VotingService() {
-        // Initialize with default genres and 0 votes
-        votes.add(new Vote("Action/Adventure", 0));
-        votes.add(new Vote("Rom-Com", 0));
-        votes.add(new Vote("Horror", 0));
+    // Method to get all votes
+    public List<Vote> getAllVotes() {
+        return voteRepository.getVotes();
     }
 
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void castVote(String option) {
-        for (Vote vote : votes) {
-            if (vote.getOption().equalsIgnoreCase(option)) {
-                vote.incrementCount();
-                break;
-            }
-        }
+    // Method to increment the vote for a selected genre
+    public void voteForGenre(String genre) {
+        voteRepository.incrementVote(genre);
     }
 }
