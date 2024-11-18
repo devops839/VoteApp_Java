@@ -1,39 +1,31 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+  branches:
+    include:
+    - main
+    - releases/*
+    exclude:
+    - releases/old*
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: adopt-openjdk-installer@1
+- task: JavaToolInstaller@0
   inputs:
-    majorVersion: '14'
-    useLatestOption: 'latest'
+    versionSpec: '17'
     jdkArchitectureOption: 'x64'
-    jvmOption: 'hotspot'
+    jdkSourceOption: 'PreInstalled'
+    
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'compile'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'clean package sonar:sonar'
+    publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-- task: Maven@4
-  inputs:
-    mavenPomFile: 'pom.xml'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
+    jdkVersionOption: '17' # Set to '17' to match your Java Tool Installer
+    jdkArchitectureOption: 'x64'
