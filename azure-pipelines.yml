@@ -62,8 +62,8 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'trivy fs --format table -o trivy-fs-report.html .'
-    displayName: Trivy Scan
+    script: 'trivy image --format table -o trivy-image-report.html .'
+    displayName: Trivy Image Scan
 
 - task: Docker@2
   inputs:
