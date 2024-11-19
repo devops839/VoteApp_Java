@@ -18,8 +18,12 @@ steps:
 - task: SonarQubePrepare@7
   inputs:
     SonarQube: 'sonarqube_sc'
-    scannerMode: 'other'
-    extraProperties: 'sonar.ws.timeout=120  # Increased timeout to 120 seconds'
+    scannerMode: 'cli'
+    configMode: 'manual'
+    cliProjectKey: 'voting_app_key'
+    cliProjectName: 'voting_app'
+    cliSources: '.'
+    extraProperties: 'sonar.ws.timeout=180  # Increase timeout to 120 seconds'
 
 # Install Java 17
 - task: JavaToolInstaller@0
