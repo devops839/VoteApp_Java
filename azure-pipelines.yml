@@ -60,10 +60,10 @@ steps:
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
 
-- task: CmdLine@2
-  inputs:
-    script: 'trivy image --format table -o trivy-image-report.html .'
-    displayName: Trivy Image Scan
+- script: |
+    echo "Running Trivy scan on the Docker image"
+    trivy image --format table -o trivy-image-report.html pavan539/voting-app-java:latest
+  displayName: 'Trivy Image Scan'
 
 - task: Docker@2
   inputs:
