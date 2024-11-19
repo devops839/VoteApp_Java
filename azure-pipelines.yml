@@ -10,12 +10,13 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+# Install Java 17
 - task: JavaToolInstaller@1
   inputs:
     versionSpec: '17'
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
-  
+
 # Prepare SonarQube analysis configuration
 - task: SonarQubePrepare@7
   inputs:
@@ -25,13 +26,17 @@ steps:
     cliProjectKey: 'voting-app'
     cliProjectName: 'voting-app'
     cliSources: '.'
-    extraProperties: 'sonar.java.binaries=.'
+    extraProperties: |
+      sonar.java.binaries=.
+      sonar.security.sourceEncoding=UTF-8
+      sonar.java.source=17
+      sonar.java.target=17
 
-# Compile the code (doesn't create jar)- task: Maven@4
+# Compile and Package Code with Maven, also run SonarQube analysis
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'compile package sonar:sonar'
+    goals: 'clean package sonar:sonar'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
@@ -41,16 +46,17 @@ steps:
     sonarQubeRunAnalysis: true
     sqMavenPluginVersionChoice: 'latest'
 
+# Publish SonarQube results
 - task: SonarQubePublish@7
   inputs:
     pollingTimeoutSec: '300'
 
-# Final SonarQube Analysis (This task must be done after Maven build, and analysis should be triggered before Docker build)
+# Final SonarQube Analysis (done after Maven build)
 - task: SonarQubeAnalyze@7
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
 
-# Build and Push Docker Image
+# Build Docker image with BuildKit enabled for efficiency and modern builds
 - task: Docker@2
   inputs:
     containerRegistry: 'dockerhub_sc'
@@ -58,19 +64,23 @@ steps:
     command: 'build'
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
+  env:
+    DOCKER_BUILDKIT: 1  # Enable BuildKit
 
-# Install Trivy (if not pre-installed)
+# Install Trivy (if not pre-installed) - Make it a conditional step if required
 - script: |
     curl -sfL https://github.com/aquasecurity/trivy/releases/download/v0.29.0/trivy_0.29.0_Linux-64bit.deb -o trivy.deb
     sudo dpkg -i trivy.deb
   displayName: 'Install Trivy'
 
-# Scan Docker image using Trivy Scan
+# Run Trivy Scan on the Docker image for vulnerabilities
 - script: |
     echo "Running Trivy scan on the Docker image"
-    trivy image --format table -o trivy-image-report.html pavan539/voting-app-java:latest
+    trivy image --format table --severity HIGH,CRITICAL --exit-code 1 -o trivy-image-report.html pavan539/voting-app-java:latest
   displayName: 'Trivy Image Scan'
+  continueOnError: false  # Fail the build if vulnerabilities are found
 
+# Push Docker Image to DockerHub
 - task: Docker@2
   inputs:
     containerRegistry: 'dockerhub_sc'
