@@ -21,13 +21,6 @@ steps:
     cliSources: '.'
     extraProperties: 'sonar.java.binaries=.'
 
-# Install Java 17
-- task: JavaToolInstaller@0
-  inputs:
-    versionSpec: '17'
-    jdkArchitectureOption: 'x64'
-    jdkSourceOption: 'PreInstalled'
-
 # Compile the code (doesn't create jar)- task: Maven@4
 - task: Maven@4
   inputs:
