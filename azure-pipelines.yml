@@ -14,11 +14,7 @@ steps:
 - task: SonarQubePrepare@7
   inputs:
     SonarQube: 'sonarqube_sc'
-    scannerMode: 'cli'
-    configMode: 'manual'
-    cliProjectKey: 'voting_app_key'
-    cliProjectName: 'voting_app'
-    cliSources: '.'
+    scannerMode: 'other'
     extraProperties: 'sonar.ws.timeout=180'
 
 # Install Java 17
@@ -45,6 +41,7 @@ steps:
 - task: SonarQubePublish@7
   inputs:
     pollingTimeoutSec: '300'
+
 # Final SonarQube Analysis (This task must be done after Maven build, and analysis should be triggered before Docker build)
 - task: SonarQubeAnalyze@7
   inputs:
