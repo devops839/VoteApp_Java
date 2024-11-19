@@ -15,11 +15,8 @@ steps:
   inputs:
     SonarQube: 'sonar_sc'
     scannerMode: 'other'
-    extraProperties: |
-      sonar.ws.timeout=180   # Increase timeout to 180 seconds
-      sonar.projectKey=voting_app_voting_app_AZNAd2rW0ehqphdOvO_g  # Your SonarQube project key
-      sonar.projectName=voting-app   # Your SonarQube project name
-      sonar.projectVersion=0.0.1-SNAPSHOT
+    extraProperties: 'sonar.login=$(sonar_sc)'
+
 
 # Install Java 17
 - task: JavaToolInstaller@0
