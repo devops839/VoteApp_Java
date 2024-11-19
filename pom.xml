@@ -23,13 +23,18 @@
     <properties>
         <java.version>17</java.version> <!-- Ensure compatibility with Java 17 -->
         <!-- SonarQube Configuration -->
-        <sonar.projectKey>voting_app_key</sonar.projectKey> <!-- Your project key in SonarQube -->
+        <sonar.projectKey>voting_app_voting_app_AZNAd2rW0ehqphdOvO_g</sonar.projectKey> <!-- Your project key in SonarQube -->
         <sonar.projectName>voting-app</sonar.projectName> <!-- Your project name in SonarQube -->
         <sonar.projectVersion>0.0.1-SNAPSHOT</sonar.projectVersion> <!-- Your project version -->
         <sonar.sources>src/main/java</sonar.sources> <!-- Your source directory -->
         <sonar.java.binaries>target/classes</sonar.java.binaries> <!-- Compiled bytecode location -->
+        
+        <!-- Explicitly exclude test files from being treated as source files -->
+        <sonar.tests>src/test/java</sonar.tests> <!-- Directory containing test files -->
+        <sonar.test.inclusions>**/*.java</sonar.test.inclusions> <!-- Only include Java files in test directory -->
+
         <!-- Timeout configuration for SonarQube analysis -->
-        <sonar.ws.timeout>180</sonar.ws.timeout> <!-- Increased timeout -->
+        <sonar.ws.timeout>180</sonar.ws.timeout> <!-- Increased timeout (ensure no spaces or comments) -->
     </properties>
 
     <!-- Dependencies section -->
@@ -104,7 +109,7 @@
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.9.2</version> <!-- Use the latest stable version of the SonarQube plugin -->
+                <version>4.0.0.4121</version> <!-- Ensure you're using the latest stable version -->
             </plugin>
 
             <!-- Surefire Plugin (for unit testing reports) -->
