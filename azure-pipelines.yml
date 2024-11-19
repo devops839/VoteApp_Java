@@ -10,6 +10,10 @@ pool:
   name: 'AgentReady'
 
 steps:
+# Checkout the repository with full history
+- checkout: self
+  fetchDepth: 0  # Fetch the full git history
+  
 # Prepare SonarQube analysis configuration
 - task: SonarQubePrepare@7
   inputs:
@@ -63,3 +67,4 @@ steps:
     containerRegistry: 'dockerhub_sc'
     repository: 'pavan539/voting-app-java'
     command: 'push'
+    tags: 'latest'
