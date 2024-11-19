@@ -13,12 +13,9 @@ steps:
 # Prepare SonarQube analysis configuration
 - task: SonarQubePrepare@7
   inputs:
-    SonarQube: 'sonar_sc'
+    SonarQube: 'sonarqube_sc'
     scannerMode: 'other'
-    extraProperties: |
-      sonar.ws.timeout=120  # Increase timeout to 120 seconds
-      sonar.login=$(SonarQubeToken)
-
+    extraProperties: 'sonar.ws.timeout=120  # Increase timeout to 120 seconds'
 
 # Install Java 17
 - task: JavaToolInstaller@0
