@@ -11,7 +11,7 @@ pool:
 
 steps:
 - script: |
-    curl http://192.168.1.129/:9000/api/server/version
+    curl http://192.168.56.1:9000/api/server/version
   displayName: 'Test SonarQube API Connectivity'
 
 # Prepare SonarQube analysis configuration
