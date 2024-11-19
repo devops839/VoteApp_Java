@@ -83,8 +83,8 @@ steps:
 
 # Trivy scan with the custom cached vulnerability DB
 - script: |
-    echo "Running Trivy scan on the Docker image with skipped DB update"
-    trivy --cache-dir $(Pipeline.Workspace)/.cache/trivy --skip-update image --format table -o trivy-image-report.html pavan539/voting-app-java:latest
+    echo "Running Trivy scan on the Docker image"
+    trivy --cache-dir $(Pipeline.Workspace)/.cache/trivy image --format table -o trivy-image-report.html pavan539/voting-app-java:latest
   displayName: 'Trivy Image Scan'
 
 # Push Docker Image to DockerHub
