@@ -23,7 +23,7 @@ steps:
     cliProjectKey: 'voting_app_key'
     cliProjectName: 'voting_app'
     cliSources: '.'
-    extraProperties: 'sonar.ws.timeout=180  # Increase timeout to 120 seconds'
+    extraProperties: 'sonar.ws.timeout=180  # Increased timeout to 120 seconds'
 
 # Install Java 17
 - task: JavaToolInstaller@0
