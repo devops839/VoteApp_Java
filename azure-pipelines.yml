@@ -15,7 +15,9 @@ steps:
   inputs:
     SonarQube: 'sonar_sc'
     scannerMode: 'other'
-    extraProperties: 'sonar.login=$(sonar_sc)'
+    extraProperties: |
+      sonar.ws.timeout=120  # Increase timeout to 120 seconds
+      sonar.login=$(SonarQubeToken)
 
 
 # Install Java 17
