@@ -64,8 +64,7 @@ steps:
     command: 'build'
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
-  env:
-    DOCKER_BUILDKIT: 1  # Enable BuildKit
+    buildArguments: '--no-cache'
 
 # Install Trivy (if not pre-installed) - Make it a conditional step if required
 - script: |
