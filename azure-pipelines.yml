@@ -10,9 +10,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-# Checkout the repository with full history
-- checkout: self
-  fetchDepth: 0  # Fetch the full git history
+- task: JavaToolInstaller@1
+  inputs:
+    versionSpec: '17'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
   
 # Prepare SonarQube analysis configuration
 - task: SonarQubePrepare@7
