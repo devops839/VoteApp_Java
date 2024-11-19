@@ -7,7 +7,7 @@ trigger:
       - releases/old*
 
 pool:
-  vmImage: ubuntu-latest
+  name: AgentReady
 
 steps:
 # Prepare SonarQube analysis configuration
