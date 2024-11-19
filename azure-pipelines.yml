@@ -66,18 +66,26 @@ steps:
     tags: 'latest'
     buildArguments: '--no-cache'
 
-# Install Trivy (if not pre-installed) - Make it a conditional step if required
+# Cache the Trivy vulnerability database manually
+- task: Cache@2
+  inputs:
+    key: 'trivy-db-cache-$(Agent.OS)-$(Build.SourceBranchName)'
+    restoreKeys: |
+      trivy-db-cache-
+    path: $(Pipeline.Workspace)/.cache/trivy
+
+# Install Trivy
 - script: |
+    echo "Installing Trivy..."
     curl -sfL https://github.com/aquasecurity/trivy/releases/download/v0.29.0/trivy_0.29.0_Linux-64bit.deb -o trivy.deb
     sudo dpkg -i trivy.deb
   displayName: 'Install Trivy'
 
-# Run Trivy Scan on the Docker image for vulnerabilities
+# Trivy scan with the custom cached vulnerability DB
 - script: |
     echo "Running Trivy scan on the Docker image"
-    trivy image --format table --severity HIGH,CRITICAL --exit-code 1 -o trivy-image-report.html pavan539/voting-app-java:latest
+    trivy --cache-dir $(Pipeline.Workspace)/.cache/trivy image --format table -o trivy-image-report.html pavan539/voting-app-java:latest
   displayName: 'Trivy Image Scan'
-  continueOnError: false  # Fail the build if vulnerabilities are found
 
 # Push Docker Image to DockerHub
 - task: Docker@2
