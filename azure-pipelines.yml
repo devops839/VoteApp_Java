@@ -28,45 +28,19 @@ steps:
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
 
-# Compile the code (doesn't create jar)
+# Compile the code (doesn't create jar)- task: Maven@4
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'compile'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '17'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: true
-    sqMavenPluginVersionChoice: 'latest'
-
-# Package the code (creates the jar)
-- task: Maven@4
-  inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'package sonar:sonar'  # Trigger SonarQube analysis after packaging
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '17'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false  # Let the 'SonarQubeAnalyze' task handle the final analysis step
-
-# Verify (integration tests, checks)
-- task: Maven@4
-  inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'verify'
+    goals: 'compile package sonar:sonar'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
-    sonarQubeRunAnalysis: false
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
 
 - task: SonarQubePublish@7
   inputs:
