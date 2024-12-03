@@ -37,7 +37,28 @@
         <sonar.ws.timeout>180</sonar.ws.timeout> <!-- Increased timeout (ensure no spaces or comments) -->
     </properties>
 
-    <!-- Dependencies section -->
+    <!-- Repositories section (Azure DevOps repository for dependencies) -->
+    <repositories>
+        <repository>
+            <id>pavank839</id>
+            <url>https://pkgs.dev.azure.com/pavank839/_packaging/pavank839/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <!-- Distribution Management section (Azure DevOps repository for deployments) -->
+    <distributionManagement>
+        <repository>
+            <id>pavank839</id>
+            <url>https://pkgs.dev.azure.com/pavank839/_packaging/pavank839/maven/v1</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <!-- Spring Boot Web starter (for REST and MVC) -->
         <dependency>
